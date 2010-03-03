@@ -1,2 +1,5 @@
 *~
 *.pyc
+doc/html/*
+doc/build/*
+!doc/html/.keep
