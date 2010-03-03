@@ -5,7 +5,7 @@
 <div class="header">From: <a href="/show/from:{{msg.mailAddress}}">{{msg.realName|e}}</a><br/>
 Subject: <a href="/search/id:{{msg.id|e}}">{{msg.Subject|e}}</a><br/>
 Date: {{msg.Date}}<br/>
-Tags: {{msg.tags|join(', ')|e}}
+{%- if msg.tags %}Tags: {{msg.tags|join(', ')|e}}{% endif -%}
 </div>
 <div class="body">
 {%- for b in msg.body -%}

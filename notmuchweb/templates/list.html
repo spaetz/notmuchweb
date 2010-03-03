@@ -14,7 +14,7 @@
  <span class="from"><a href="/show/from:{{msg.mailAddress}}">{{msg.realName|truncate(30,True)|e}}</a></span>
  <span class="subject"><a href="/id:{{msg.id|e}}">{{msg.Subject|truncate(40)|e}}</a></span>
  <span class="date">{{msg.get_date('%y-%m-%d %H:%M')}}</span>
- <span class="tag">{%for tag in msg.tags%}<a href="/show/tag:{{tag}}">{{tag|e}}</a>{%if not loop.last %}, {%endif%}{%endfor%}</span>
+ <span class="tag">{%if msg.tags%}{%for tag in msg.tags%}<a href="/show/tag:{{tag}}">{{tag|e}}</a>{%if not loop.last %}, {%endif%}{%endfor%}{%endif%}</span>
 </div>
 {% endfor %}
 </div>
