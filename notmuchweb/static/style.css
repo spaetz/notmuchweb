@@ -1,0 +1,23 @@
+table, tr, td {
+    border-width:0px;
+    padding: 1px;
+    margin:0px;
+}
+
+.msgline {color: black;}
+.even {
+    background-color: #FCEB79;}
+.odd {
+    background-color: #BBFABC;}
+
+.header {
+    background-color: #BBFABC;
+    padding: 0.5em 1em;
+}
+.body {
+    background-color: #FCFBA9;
+    padding: 0.5em 0.5em;
+    white-space: pre;
+    font-family: mono;
+    font-size: 80%
+}

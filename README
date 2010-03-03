@@ -1,0 +1,4 @@
+notmuch-web
+===========
+
+requirements jinja2, python (>=2.6?), python-webpy

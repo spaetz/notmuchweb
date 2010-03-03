@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+{%block content%}
+{%for msg in msgs%}
+<div class="msg">
+<div class="header">From: <a href="/show/from:{{msg.mailAddress}}">{{msg.realName|e}}</a><br/>
+Subject: <a href="/id:{{msg.id|e}}">{{msg.Subject|e}}</a><br/>
+Date: {{msg.Date}}<br/>
+Tags: {{msg.tags|join(', ')|e}}
+</div>
+<div class="body">
+{%- for b in msg.body -%}
+{%if loop.length > 1%}Part {{b.id}}:<br/>{%endif -%}
+<p>{{b.content|e|replace("\\n", "<br/>")}}</p>
+{%endfor%}</div></div>
+{%endfor%}
+{%endblock content%}
+

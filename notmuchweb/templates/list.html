@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+{%block content%}
+<p>JSON returned {{msgs|count}} messages.</p>
+<table>
+<tr class="msgline thead"><td>From</td><td>Subject</td><td>Date</td><td>Tags</td><td>Body</td></tr>
+{% set row_class = cycler('odd', 'even') %}
+{% for msg in msgs %}
+{%if msg.msg.match %}{# as long as json delivers ALL msg in matching threads we need to filter out non-matches here :-( #}
+<tr class="msgline, {{ row_class.next() }}">
+ <td><a href="/show/from:{{msg.mailAddress}}">{{msg.realName|truncate(30,True)|e}}</a></td>
+ <td><a href="/id:{{msg.id|e}}">{{msg.Subject|truncate(40)|e}}</a></td>
+ <td>{{msg.get_date('%y-%m-%d %H:%M')}}</td>
+ <td>{%for tag in msg.tags%}<a href="/show/tag:{{tag}}">{{tag|e}}</a>{%if not loop.last %}, {%endif%}{%endfor%}</td><td>{{msg.body[0].content|e|replace("\\n", "<br/>")|truncate}}</td></tr>
+{%endif%}{% endfor %}
+</table>
+{%endblock content%}
