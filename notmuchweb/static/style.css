@@ -1,20 +1,36 @@
+.depth0 {padding-left: 0em;}
+.depth1 {padding-left: 1em;}
+.depth2 {margin-left: 2em;}
+.depth3 {margin-left: 3em;}
+.depth4 {margin-left: 4em;}
+.depth5 {margin-left: 5em;}
+.depthgt5 {margin-left: 6em;}
+
 table, tr, td {
     border-width:0px;
     padding: 1px;
     margin:0px;
 }
 
-.msgline {color: black;}
-.even {
+.msgline {
+    border: 1px solid gray;
+    color: black;}
+
+.even *{
     background-color: #FCEB79;}
-.odd {
+.odd *{
     background-color: #BBFABC;}
+
+.nomatch {
+    display:none;
+    background-color: #CCCCCC;}
 
 .header {
     background-color: #BBFABC;
     padding: 0.5em 1em;
 }
 .body {
+    display:none;
     background-color: #FCFBA9;
     padding: 0.5em 0.5em;
     white-space: pre;
