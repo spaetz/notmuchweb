@@ -7,10 +7,14 @@ Python 2.6 because of simplejson, otherwise 2.4 minimum(?)
 Usage
 -----
 1) configure notmuch to work on your box.
+   To get support for notmuch tags you need to apply this patch to notmuch
+   http://github.com/spaetz/notmuch-all-feature/commit/dcfcdc6e2aac39a2cef5063fc272e1abc95c057b
+   In fact, the python json parser seems to crash on notmuch json output 
+   without somtimes.
 2) cd notmuchweb; python notmuchweb.py
 3) Open browser at http://localhost:8080
 
-3 API calls are implemented. XXX can be any notmuch search-term:
+Currently 3 API calls are implemented. XXX can be any notmuch search-term:
 
 /id:messageidhere (shows a specific message with body)
 /show/XXX         (show only matching messages as a list)
@@ -19,3 +23,13 @@ Usage
 Configuration
 -------------
 web.py can be configured as wsgi application, see the web.py documentation for more.
+
+
+Templates
+---------
+The templates are standard jinja2 templates. Documentation for that is here: 
+http://jinja.pocoo.org/2/documentation/
+
+Each template gets a "msgs" object which is a list of (depth,
+Message()) tuples. Please refer to the (non yet existing)
+documentation of the Message() class for attributes and methods.
