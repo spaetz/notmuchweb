@@ -1,4 +1,21 @@
 notmuch-web
 ===========
 
-requirements jinja2, python (>=2.6?), python-webpy
+requirements jinja2, python (>=2.6), python-webpy
+Python 2.6 because of simplejson, otherwise 2.4 minimum(?)
+
+Usage
+-----
+1) configure notmuch to work on your box.
+2) cd notmuchweb; python notmuchweb.py
+3) Open browser at http://localhost:8080
+
+3 API calls are implemented. XXX can be any notmuch search-term:
+
+/id:messageidhere (shows a specific message with body)
+/show/XXX         (show only matching messages as a list)
+/search/XXX       (show matching messages including their threads)
+
+Configuration
+-------------
+web.py can be configured as wsgi application, see the web.py documentation for more.

@@ -55,13 +55,12 @@ class Message:
             logging.debug("Message.parse() was handed an empty text.")
             return
         #message[0][0].keys()=[u'body', u'tags', u'filename', u'headers', u'id', u'match']
-        if set((u'tags', u'filename', u'id')) < set(message.keys()):
+        if set((u'filename', u'id')) < set(message.keys()):
             self.is_valid=True
             self.msg = message
-            self.tags = message['tags']
+            self.tags = message.get('tags',None)
             flags = re.sub('^.*:[12],([A-Z]*)$','\\1',self.file)
             self.maildirflags = set(flags)
-            #self.date will get lazily parsed when needed
         else:
             #TODO better output here
             logging.warning("no valid mail")
@@ -71,16 +70,16 @@ class Message:
         return self.msg.get('filename', None)
 
     @property
-    def header(self):
+    def headers(self):
         return self.msg['headers']
 
     @property
     def Subject(self):
-        return self.msg['headers'].get('Subject', None)
+        return self.headers.get('Subject', None)
 
     @property
     def From(self):
-        return self.msg['headers'].get('From', None)
+        return self.headers.get('From', None)
 
     @property
     def realName(self):
@@ -104,7 +103,7 @@ class Message:
 
     @property
     def Date(self):
-        return self.msg['headers'].get('Date', None)
+        return self.headers.get('Date', None)
 
     @property
     def id(self):
@@ -119,7 +118,7 @@ class Message:
 
     def __repr__(self):
         """A message is represented by "id:blah (name)" (if valid) or 'NULL' """
-        return "id:%s (%s)" % (self.id, self.realName)
+        return "id:%s (%s) %s" % (self.id, self.Subject, self.get_date('%d-%m-%y'))#self.realName)
 
     def sync_msg_tags(self, dryrun=False):
         """ Sync up changed maildir tags and/or notmuch tags.
@@ -172,47 +171,58 @@ class Thread:
 #---------------------------------------------------------------------------
     """
     An iterator containing a bunch of mail messages retaining the thread structure).
+
+    The work horse is self.msgs which is a list of (depth, Message()) tuples.
+    depth starts at 0 and increases for replies.
     """
 
-    def __init__(self, json_thread=None, keep_body=True, depth=0):
+    def __init__(self, json_thread=None, keep_body=True, keep_nonmatch=True, depth=0):
         """ Initialize Thread with a json thread object """
         self.msgs = []
         """(depth, Message())"""
         self.depth=depth
+        self.keep_body=keep_body
+        self.keep_nonmatch=keep_nonmatch
         self.is_valid = False
-        if (json_thread == None):
-            #init an empty Thread
-            return
-        self.parse_thread(json_thread, keep_body)
+        if json_thread is not None:
+            self.parse_thread(json_thread, keep_body)
 
     def parse_forest(self, json_threads):
-        """ parses multiple 'threads' (a json object)
-         returns: self
+        """ parses and add multiple 'threads' (json object)
+        
+        The method honors existing self.keep_body and self.keep_nonmatch values
+        returns: self
         """
         if len(json_threads) == 0:
             logging.warning("Found no valid messages")
         
         for thread in json_threads:
-            t = Thread(thread)
+            t = Thread(thread,keep_nonmatch=self.keep_nonmatch,
+                       keep_body=self.keep_body, depth=self.depth)
             if t.is_valid:
                 self.msgs.extend(t.msgs)
         return self
 
     def parse_thread(self, json_thread, keep_body):
         """ parses a json_thread object and adds (depth, Message()) tuples to
-        self.msg.
+        self.msg
         """
-
         for tree in json_thread:
             msg, reply_thread = tree
             #parse each single message and append it
             if not keep_body: del(msg[0][0]['body'])
             msg = Message(msg)
             if msg.is_valid:
-                self.is_valid = True
-                self.msgs.append((self.depth,msg))
-                reply = Thread(reply_thread, keep_body, self.depth+1)
+                nextdepth=self.depth #by default don't increase the depth
+                if msg.msg['match'] or self.keep_nonmatch:
+                    self.is_valid = True
+                    self.msgs.append((self.depth,msg))
+                    #increase thread depth if we actually add a msg
+                    nextdepth=self.depth+1
+                reply = Thread(reply_thread, keep_body, 
+                               keep_nonmatch=self.keep_nonmatch,depth=nextdepth)
                 if reply.is_valid:
+                    self.is_valid = True
                     self.msgs.extend(reply.msgs)
 
     def __len__(self):
@@ -232,16 +242,10 @@ class Thread:
         return self.msgs[self._iter_pos - 1]
 
     def __repr__(self):
-        ret = ""
-        for (m,replies) in self.msgs:
-            ret += " " * self.depth
-            ret += str(m)
-            if replies is not None:
-                ret += " replies: %d" % len(replies.msgs)
-            ret += "\n"
-            if replies is not None:
-                ret += replies.__repr__()
-        return ret
+        lines = []
+        for (depth, msg) in self.msgs:
+            lines.append("%s%s" %(" "*depth,str(msg)))
+        return "\n".join(lines)
 
     def __len__(self):
         """ Returns the number of contained messages """
@@ -291,7 +295,7 @@ class Notmuch:
 
     def new(self):
         """ Perform a notmuch new in order to get a consistent db
-        Returns True on success or None on error
+        Returns: True on success or None on error
         """
         cmdoptions = ['new']
         process = self.exec_cmd(cmdoptions)
@@ -324,7 +328,7 @@ class Notmuch:
             #Don't abort here... not returning None
 
         json_forest = json.loads(stdout)
-        return Thread().parse_forest(json_forest)
+        return Thread(keep_nonmatch=wholeThread).parse_forest(json_forest)
 
     def prune(self, criteria="tag:delete or tag:maildir::trashed", dryrun=False):
         """ Physically delete all mail files matching 'tag'. 

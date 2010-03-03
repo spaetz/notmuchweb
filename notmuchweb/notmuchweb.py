@@ -14,12 +14,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+from notmuch import Notmuch
 import web
 from web.contrib.template import render_jinja
 
 urls = (
     '/', 'index',
     '/show/(.*)', 'show_msgs',
+    '/search/(.*)', 'show_threads',
     '/id:(.*)', 'show_msg_by_id',
 )
 
@@ -31,20 +33,25 @@ app = web.application(urls, globals())
 
 class index:
     def GET(self):
-        return show_msgs().GET('tag:inbox',index=True)
+        return show_msgs().GET('tag:inbox',threads=False)
+
+class show_threads:
+    def GET(self, query):
+        return show_msgs().GET(query, threads=True)
 
 class show_msg_by_id:
     def GET(self, id):
-        return show_msgs().GET('id:'+id, index=False)
+        return show_msgs().GET('id:'+id, threads=False, detail=True)
 
 class show_msgs:
-    def GET(self, query, index=True):
+    def GET(self, query, threads=False, detail=False):
         notmuch = Notmuch()
-        msgs = notmuch.show(query)
-        if index:
-            return render.list(msgs=msgs)
-        else:
+        msgs = notmuch.show(query,wholeThread=threads)
+        if detail:
             return render.thread(msgs=msgs)
+        else:
+            return render.list(msgs=msgs)
 
 if __name__ == "__main__":
     app.run()
+    #print Notmuch().show('from:osm-list@deelkar.net')

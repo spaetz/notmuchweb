@@ -22,7 +22,6 @@ table, tr, td {
     background-color: #BBFABC;}
 
 .nomatch {
-    display:none;
     background-color: #CCCCCC;}
 
 .header {
@@ -30,7 +29,6 @@ table, tr, td {
     padding: 0.5em 1em;
 }
 .body {
-    display:none;
     background-color: #FCFBA9;
     padding: 0.5em 0.5em;
     white-space: pre;

@@ -6,7 +6,6 @@
   <span class="subject">Subject</span>
   <span class="date">Date</span>
   <span class="tag">Tags</span>
-  <span>Body</span>
  </div>
 {% set row_class = cycler('odd', 'even') %}
 {% for (depth,msg) in msgs %}
@@ -16,7 +15,6 @@
  <span class="subject"><a href="/id:{{msg.id|e}}">{{msg.Subject|truncate(40)|e}}</a></span>
  <span class="date">{{msg.get_date('%y-%m-%d %H:%M')}}</span>
  <span class="tag">{%for tag in msg.tags%}<a href="/show/tag:{{tag}}">{{tag|e}}</a>{%if not loop.last %}, {%endif%}{%endfor%}</span>
-<span class="body">{{msg.body[0].content|e|replace("\\n","<br/>")|truncate(40)}}</span>
 </div>
 {% endfor %}
 </div>
