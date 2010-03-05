@@ -377,6 +377,7 @@ class Notmuch:
         It will take the maildir tags as authoritative if 'frommaildir' or 
         the notmuch tags otherwise. 
         
+        This code requires that the dateparser branch has been applied to notmuch as it will not understand the used timestamps otherwise.(TODO, should implement a fallback, as that is not going to to be incorporated anytime soon)
         Flags handled:
         * "S": the user has viewed this message. Corresponds to "unread" tag
         * "T" (deleted): the user has moved this message to the trash.
@@ -386,7 +387,7 @@ class Notmuch:
         * Flag "P" (passed): the user has resent/forwarded/bounced this message.
         * Flag "R" (replied): the user has replied to this message.
         """
-        if not all_mails:
+        if not thorough:
             #search for messages from beginning of last month until 2036
             # (we have a  year 2036 problem)
             searchterm = "date:lastmonth..2036"
