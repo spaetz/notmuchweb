@@ -1,0 +1,23 @@
+# Sphinx inventory version 1
+# Project: notmuch
+# Version: 0.1
+notmuch.DnsRequest.req method index.html
+notmuch.DnsRequest.sendUDPRequest method index.html
+notmuch.DnsRequest class index.html
+DNS.Type.A data constants.html
+DNS.Type.MG data constants.html
+DNS.Type.MF data constants.html
+DNS.Type.MB data constants.html
+notmuch.dumpRR method index.html
+DNS.Type.CNAME data constants.html
+DNS.Type.MR data constants.html
+notmuch.DnsRequest.sendTCPRequest method index.html
+DNS.Type.WKS data constants.html
+DNS.Type.NULL data constants.html
+DNS.Type class constants.html
+notmuch.DiscoverNameServers method index.html
+DNS.Opcode class constants.html
+notmuch.dumpQ method index.html
+DNS.Type.MD data constants.html
+DNS.Type.NS data constants.html
+DNS.Type.SOA data constants.html
