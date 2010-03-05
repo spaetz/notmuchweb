@@ -24,31 +24,34 @@ class Message:
     Represents a message as returned by notmuch.
 
     - Valid instance variables self.*:
-      The following vars are set on the initial parsing:
+      The following vars are set on the initial parsing 
+      (or dynamically created as properties):
       .id (msg id, is set on the initial parsing)
       .file (full file name including path, is set on the initial parsing)
-      .tags: a set() of MailDir flags
-      .notmuchtags: a set() of notmuch tags
+      .maildirflags: a set() of MailDir flags
+      .tags: a set() of notmuch tags
+      ... and many more properties. Please refer to the class documentation
+          for details.
 
       If the following two variables contain a set() of tags/flags that are 
       different from .tags .notmuchtags, a sync_msg_tags will write those 
       changes:
-      .sync_tags: a set() of MailDir flags to be used
-      .sync_notmuchtags: a set() of notmuch tags to be used
+      .sync_maildirflags: a set() of MailDir flags to be used
+      .sync_tags: a set() of notmuch tags to be used
 
       .is_valid: is True if parsing found a message, False otherwise
     """
 
     def __init__(self, nm_msg):
-       """inititialize a message from "nm_msg" (output from notmuch show 
-       in json format.
+       """inititialize a message from "nm_msg" 
+
+          :param nm_msg: a message as output from notmuch show in json format
        """
        self.is_valid=False
        self.msg=None
        self.maildirflags = self.sync_maildirflags = None
        self.tags = self.sync_tags = None
        self.parse(nm_msg)
-       self.date = None
 
     def parse(self, message):
         if message == "":
