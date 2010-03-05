@@ -1,23 +1,17 @@
 # Sphinx inventory version 1
 # Project: notmuch
 # Version: 0.1
-notmuch.Notmuch.sendTCPRequest method index.html
-DNS.Type.MF data thread.html
-DNS.Type.A data thread.html
-notmuch.DiscoverNameServers method index.html
-DNS.Type.MG data thread.html
 DNS.Type.NULL data thread.html
-notmuch.Notmuch.sendUDPRequest method index.html
+DNS.Type.A data thread.html
+DNS.Type.MD data thread.html
+DNS.Type.MG data thread.html
+DNS.Type.MF data thread.html
 DNS.Type.MB data thread.html
 DNS.Type class thread.html
-notmuch.dumpRR method index.html
 DNS.Type.NS data thread.html
-notmuch.dumpQ method index.html
-notmuch.Notmuch.new method index.html
 DNS.Type.WKS data thread.html
 DNS.Opcode class thread.html
 notmuch.Notmuch class index.html
 DNS.Type.CNAME data thread.html
 DNS.Type.SOA data thread.html
-DNS.Type.MD data thread.html
 DNS.Type.MR data thread.html

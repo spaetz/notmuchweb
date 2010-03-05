@@ -7,6 +7,7 @@ Welcome to notmuch's documentation!
 
 The :mod:`notmuch` module provides an interface to the `notmuch <http://notmuchmail.org>`_ functionality. The main work horse of this module is the class :class:`Notmuch` with important other classes representing a :class:`Thread` and a single :class:`Message`.
 
+.. moduleauthor:: Sebastian Spaeth <Sebastian@SSpaeth.de>
 :License: This module is covered under the GNU GPL v2 (or later).
 
 This page contains the main API overview. More information on specific topics can be found on the following pages:
@@ -19,47 +20,6 @@ This page contains the main API overview. More information on specific topics ca
 :mod:`notmuch` -- The Notmuch interface
 =============================================
 
-.. method:: DiscoverNameServers
-
-   Retrieve the system name servers and sets them as default values for the :class:`DnsRequest` *server* parameter. This value will be taken as default value for all future :class:`DnsRequest` instances and as default in :meth:`DnsRequest.req` if the *server* parameter is not explicitely given. Calling this once per module lifetime suffices if your DNS servers have not changed in the meanwhile.
-
-   :returns: None
-
-
-.. method:: dumpQ(u)
-
-   *FIXME*
-
-.. method:: dumpRR(u)
-
-   *FIXME*
-
-Convenience methods
-^^^^^^^^^^^^^^^^^^^
-
-.. method:: revlookup(name):
-
-    Convenience routine for doing a reverse lookup of an address. This will only return one of any records returned.
-
-    :returns: DnsRequest(b, qtype = 'ptr').req().answers[0]['data']
-
-.. method:: revlookup6(name):
-
-   Takes an IPv6 textual address (rfc 2373 2.2 presentation format 
-   (subpart 3, ::i.p.v.4 is explicitly NOT supported). 
-
-   return q.answers[0]['data']
-
-   :returns: a name (only one if more than one presented).
-
-
-.. method:: mxlookup(name):
-
-    Convenience routine for doing an MX lookup of a name. 
-
-    :returns: List mail exchanger records sorted by preference.
-
-
 :class:`Notmuch` -- A notmuch call
 ------------------------------------
 
@@ -71,7 +31,11 @@ Convenience methods
    :type logger: logging.Logger
    :rtype: the initialized Notmuch instance
 
-   .. method:: new()
+
+Methods
+^^^^^^^^^^^^^^^^^^^
+
+   .. automethod:: new()
 
       Perform a DNS request.
 
@@ -82,20 +46,11 @@ Convenience methods
 
       .. note:: This function would usually be called by the user to perform a DNS query.
    
+   .. automethod:: syncTags(self[,thorough=False[, frommaildir=False[,dryrun=False[, all_mails=None]]]]):
 
-   .. method:: sendTCPRequest(server)
-
-      Actually perform a TCP Request with the paramters that have previously been set up with the :class:`DNSRequest` initialization or the parameters passed to :meth:`req`.  This function would usually not be called directly by the user but is invoked from :meth:`req`.
-
-      :param server: DNS server hostname(s) as string or list of strings
-      :type server: string or list of strings
-
-   .. method:: sendUDPRequest(server)
-
-      Actually perform a UDP Request with the paramters that have previously been set up with the :class:`DNSRequest` initialization or the parameters passed to :meth:`req`. This function would usually not be called directly by the user but is invoked from :meth:`req`.
-
-      :param server: DNS server hostname(s) as string or list of strings
-      :type server: string or list of strings
+      :param thorough: DNS server hostname(s) as string or list of strings
+      :type thorough: string or list of strings
+      :TODO: should implement a fallback, as that is not going to to be incorporated anytime soon)
 
 
 :class:`DnsResult` -- A DNS request result

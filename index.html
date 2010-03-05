@@ -59,78 +59,8 @@
 </div>
 <div class="section" id="notmuch-the-notmuch-interface">
 <h1><tt class="xref docutils literal"><span class="pre">notmuch</span></tt> &#8211; The Notmuch interface<a class="headerlink" href="#notmuch-the-notmuch-interface" title="Permalink to this headline">¶</a></h1>
-<dl class="method">
-<dt id="notmuch.DiscoverNameServers">
-<tt class="descname">DiscoverNameServers</tt><big>(</big><big>)</big><a class="headerlink" href="#notmuch.DiscoverNameServers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the system name servers and sets them as default values for the <tt class="xref docutils literal"><span class="pre">DnsRequest</span></tt> <em>server</em> parameter. This value will be taken as default value for all future <tt class="xref docutils literal"><span class="pre">DnsRequest</span></tt> instances and as default in <tt class="xref docutils literal"><span class="pre">DnsRequest.req()</span></tt> if the <em>server</em> parameter is not explicitely given. Calling this once per module lifetime suffices if your DNS servers have not changed in the meanwhile.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="notmuch.dumpQ">
-<tt class="descname">dumpQ</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#notmuch.dumpQ" title="Permalink to this definition">¶</a></dt>
-<dd><em>FIXME</em></dd></dl>
-
-<dl class="method">
-<dt id="notmuch.dumpRR">
-<tt class="descname">dumpRR</tt><big>(</big><em>u</em><big>)</big><a class="headerlink" href="#notmuch.dumpRR" title="Permalink to this definition">¶</a></dt>
-<dd><em>FIXME</em></dd></dl>
-
-<div class="section" id="convenience-methods">
-<h2>Convenience methods<a class="headerlink" href="#convenience-methods" title="Permalink to this headline">¶</a></h2>
-<dl class="method">
-<dt>
-<tt class="descname">revlookup(name):</tt></dt>
-<dd><p>Convenience routine for doing a reverse lookup of an address. This will only return one of any records returned.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">DnsRequest(b, qtype = &#8216;ptr&#8217;).req().answers[0][&#8216;data&#8217;]</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<tt class="descname">revlookup6(name):</tt></dt>
-<dd><p>Takes an IPv6 textual address (rfc 2373 2.2 presentation format
-(subpart 3, ::i.p.v.4 is explicitly NOT supported).</p>
-<p>return q.answers[0][&#8216;data&#8217;]</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a name (only one if more than one presented).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<tt class="descname">mxlookup(name):</tt></dt>
-<dd><p>Convenience routine for doing an MX lookup of a name.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">List mail exchanger records sorted by preference.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <div class="section" id="notmuch-a-notmuch-call">
-<h3><a title="notmuch.Notmuch" class="reference internal" href="#notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> &#8211; A notmuch call<a class="headerlink" href="#notmuch-a-notmuch-call" title="Permalink to this headline">¶</a></h3>
+<h2><a title="notmuch.Notmuch" class="reference internal" href="#notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> &#8211; A notmuch call<a class="headerlink" href="#notmuch-a-notmuch-call" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="notmuch.Notmuch">
 <em class="property">
@@ -146,67 +76,22 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="notmuch.Notmuch.new">
-<tt class="descname">new</tt><big>(</big><big>)</big><a class="headerlink" href="#notmuch.Notmuch.new" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform a DNS request.</p>
-<p>This method should usually be used to perform DNS requests. Parameters given here, will replace those that have been used to initialize the <tt class="xref docutils literal"><span class="pre">DnsRequest</span></tt>. All function parameters are identical to the <tt class="xref docutils literal"><span class="pre">DnsRequest()</span></tt>. Specifying an invalid <em>qtype</em> argument will raise <tt class="xref docutils literal"><span class="pre">DNSError</span></tt> &#8216;unknown query type&#8217;.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A <tt class="xref docutils literal"><span class="pre">DnsResult</span></tt> instance (also bound to the <tt class="xref docutils literal"><span class="pre">DnsRequest.response</span></tt> attribute) or <em>None</em> (for async calls)</td>
-</tr>
-<tr class="field"><th class="field-name">Exception:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">DNSError</span></tt> in case of errors.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This function would usually be called by the user to perform a DNS query.</p>
+</dd></dl>
+
+<div class="section" id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+</blockquote>
 </div>
-</dd></dl>
-
-<dl class="method">
-<dt id="notmuch.Notmuch.sendTCPRequest">
-<tt class="descname">sendTCPRequest</tt><big>(</big><em>server</em><big>)</big><a class="headerlink" href="#notmuch.Notmuch.sendTCPRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Actually perform a TCP Request with the paramters that have previously been set up with the <tt class="xref docutils literal"><span class="pre">DNSRequest</span></tt> initialization or the parameters passed to <tt class="xref docutils literal"><span class="pre">req()</span></tt>.  This function would usually not be called directly by the user but is invoked from <tt class="xref docutils literal"><span class="pre">req()</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>server</em> (string or list of strings) &#8211; DNS server hostname(s) as string or list of strings</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="notmuch.Notmuch.sendUDPRequest">
-<tt class="descname">sendUDPRequest</tt><big>(</big><em>server</em><big>)</big><a class="headerlink" href="#notmuch.Notmuch.sendUDPRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Actually perform a UDP Request with the paramters that have previously been set up with the <tt class="xref docutils literal"><span class="pre">DNSRequest</span></tt> initialization or the parameters passed to <tt class="xref docutils literal"><span class="pre">req()</span></tt>. This function would usually not be called directly by the user but is invoked from <tt class="xref docutils literal"><span class="pre">req()</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>server</em> (string or list of strings) &#8211; DNS server hostname(s) as string or list of strings</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="dnsresult-a-dns-request-result">
-<h3><tt class="xref docutils literal"><span class="pre">DnsResult</span></tt> &#8211; A DNS request result<a class="headerlink" href="#dnsresult-a-dns-request-result" title="Permalink to this headline">¶</a></h3>
+<h2><tt class="xref docutils literal"><span class="pre">DnsResult</span></tt> &#8211; A DNS request result<a class="headerlink" href="#dnsresult-a-dns-request-result" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="dnserror-a-dns-request-error">
-<h3><tt class="xref docutils literal"><span class="pre">DNSError</span></tt> &#8211; A DNS request error<a class="headerlink" href="#dnserror-a-dns-request-error" title="Permalink to this headline">¶</a></h3>
+<h2><tt class="xref docutils literal"><span class="pre">DNSError</span></tt> &#8211; A DNS request error<a class="headerlink" href="#dnserror-a-dns-request-error" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="out-of-date-and-broken">
-<h3>Out of date and broken<a class="headerlink" href="#out-of-date-and-broken" title="Permalink to this headline">¶</a></h3>
-</div>
+<h2>Out of date and broken<a class="headerlink" href="#out-of-date-and-broken" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -229,13 +114,13 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
 </ul>
 </li>
 <li><a class="reference external" href="#notmuch-the-notmuch-interface"><tt class="docutils literal"><span class="pre">notmuch</span></tt> &#8211; The Notmuch interface</a><ul>
-<li><a class="reference external" href="#convenience-methods">Convenience methods</a><ul>
-<li><a class="reference external" href="#notmuch-a-notmuch-call"><tt class="docutils literal"><span class="pre">Notmuch</span></tt> &#8211; A notmuch call</a></li>
+<li><a class="reference external" href="#notmuch-a-notmuch-call"><tt class="docutils literal"><span class="pre">Notmuch</span></tt> &#8211; A notmuch call</a><ul>
+<li><a class="reference external" href="#methods">Methods</a></li>
+</ul>
+</li>
 <li><a class="reference external" href="#dnsresult-a-dns-request-result"><tt class="docutils literal"><span class="pre">DnsResult</span></tt> &#8211; A DNS request result</a></li>
 <li><a class="reference external" href="#dnserror-a-dns-request-error"><tt class="docutils literal"><span class="pre">DNSError</span></tt> &#8211; A DNS request error</a></li>
 <li><a class="reference external" href="#out-of-date-and-broken">Out of date and broken</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a class="reference external" href="#indices-and-tables">Indices and tables</a></li>
@@ -246,7 +131,7 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
                                   title="next chapter">Constants: <tt class="docutils literal"><span class="pre">Opcode</span></tt> &amp; <tt class="docutils literal"><span class="pre">Type</span></tt></a></p>
             <h3>This Page</h3>
             <ul class="this-page-menu">
-              <li><a href="_sources/index.txt"
+              <li><a href="sources/index.txt"
                      rel="nofollow">Show Source</a></li>
             </ul>
           <div id="searchbox" style="display: none">
