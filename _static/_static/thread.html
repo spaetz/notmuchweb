@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Constants: Opcode & Type &mdash; notmuch v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="notmuch v0.1 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to notmuch’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to notmuch’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">notmuch v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="constants-opcode-type">
+<h1>Constants: <tt class="xref docutils literal"><span class="pre">Opcode</span></tt> &amp; <tt class="xref docutils literal"><span class="pre">Type</span></tt><a class="headerlink" href="#constants-opcode-type" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="opcode-query-opcode">
+<h2><a title="DNS.Opcode" class="reference internal" href="#DNS.Opcode"><tt class="xref docutils literal"><span class="pre">Opcode</span></tt></a> &#8211; Query opcode<a class="headerlink" href="#opcode-query-opcode" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DNS.Opcode">
+<em class="property">
+class </em><tt class="descname">Opcode</tt><a class="headerlink" href="#DNS.Opcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constants of the Opcode module represent DNS query opcodes.
+Some of the opcodes are described in
+<a class="reference external" href="http://www.ietf.org/rfc/rfc1035.txt">RFC 1035</a>.
+The following constants are defined:
+<strong>QUERY</strong>, <strong>IQUERY</strong>, <strong>STATUS</strong>, <strong>NOTIFY</strong>, <strong>UPDATE</strong>.</p>
+<p>The standard query is for example Opcode.QUERY.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="type-query-type">
+<h2><a title="DNS.Type" class="reference internal" href="#DNS.Type"><tt class="xref docutils literal"><span class="pre">Type</span></tt></a> &#8211; Query type<a class="headerlink" href="#type-query-type" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DNS.Type">
+<em class="property">
+class </em><tt class="descname">Type</tt><a class="headerlink" href="#DNS.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constants of the Type module represent DNS query types.
+The following constants are defined:</p>
+<dl class="data">
+<dt id="DNS.Type.A">
+<tt class="descname">A</tt><a class="headerlink" href="#DNS.Type.A" title="Permalink to this definition">¶</a></dt>
+<dd>a host address</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.NS">
+<tt class="descname">NS</tt><a class="headerlink" href="#DNS.Type.NS" title="Permalink to this definition">¶</a></dt>
+<dd>an authoritative name server</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.MD">
+<tt class="descname">MD</tt><a class="headerlink" href="#DNS.Type.MD" title="Permalink to this definition">¶</a></dt>
+<dd>a mail destination (Obsolete - use MX)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.MF">
+<tt class="descname">MF</tt><a class="headerlink" href="#DNS.Type.MF" title="Permalink to this definition">¶</a></dt>
+<dd>a mail forwarder (Obsolete - use MX)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.CNAME">
+<tt class="descname">CNAME</tt><a class="headerlink" href="#DNS.Type.CNAME" title="Permalink to this definition">¶</a></dt>
+<dd>the canonical name for an alias</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.SOA">
+<tt class="descname">SOA</tt><a class="headerlink" href="#DNS.Type.SOA" title="Permalink to this definition">¶</a></dt>
+<dd>marks the start of a zone of authority</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.MB">
+<tt class="descname">MB</tt><a class="headerlink" href="#DNS.Type.MB" title="Permalink to this definition">¶</a></dt>
+<dd>mailbox domain name (EXPERIMENTAL)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.MG">
+<tt class="descname">MG</tt><a class="headerlink" href="#DNS.Type.MG" title="Permalink to this definition">¶</a></dt>
+<dd>mail group member (EXPERIMENTAL)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.MR">
+<tt class="descname">MR</tt><a class="headerlink" href="#DNS.Type.MR" title="Permalink to this definition">¶</a></dt>
+<dd>mail rename domain name (EXPERIMENTAL)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.NULL">
+<tt class="descname">NULL</tt><a class="headerlink" href="#DNS.Type.NULL" title="Permalink to this definition">¶</a></dt>
+<dd>null RR (EXPERIMENTAL)</dd></dl>
+
+<dl class="data">
+<dt id="DNS.Type.WKS">
+<tt class="descname">WKS</tt><a class="headerlink" href="#DNS.Type.WKS" title="Permalink to this definition">¶</a></dt>
+<dd>well known service description</dd></dl>
+
+</dd></dl>
+
+<p>PTR = 12        # a domain name pointer
+HINFO = 13      # host information
+MINFO = 14      # mailbox or mail list information
+MX = 15         # mail exchange
+TXT = 16        # text strings
+AAAA = 28       # IPv6 AAAA records (RFC 1886)
+SRV = 33        # DNS RR for specifying the location of services (RFC 2782)
+UNAME = 110
+MP = 240
+AXFR = 252      # A request for a transfer of an entire zone
+MAILB = 253     # A request for mailbox-related records (MB, MG or MR)
+MAILA = 254     # A request for mail agent RRs (Obsolete - see MX)
+ANY = 255       # A request for all records</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Constants: <tt class="docutils literal"><span class="pre">Opcode</span></tt> &amp; <tt class="docutils literal"><span class="pre">Type</span></tt></a><ul>
+<li><a class="reference external" href="#opcode-query-opcode"><tt class="docutils literal"><span class="pre">Opcode</span></tt> &#8211; Query opcode</a></li>
+<li><a class="reference external" href="#type-query-type"><tt class="docutils literal"><span class="pre">Type</span></tt> &#8211; Query type</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Welcome to notmuch&#8217;s documentation!</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/thread.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to notmuch’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">notmuch v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2010, Sebastian Spaeth.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>
