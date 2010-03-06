@@ -1,0 +1,8 @@
+#!/bin/sh
+
+rf -rf static source
+mv _source source
+mv _static static
+
+find -name "*.html"|xargs sed -i 's/_sources/sources/'
+find -name "*.html"|xargs sed -i 's/_static/static/'
