@@ -23,15 +23,16 @@ class Message:
     """
     Represents a message as returned by notmuch.
 
-    - Valid instance variables self.*:
-      The following vars are set on the initial parsing 
-      (or dynamically created as properties):
-      .id (msg id, is set on the initial parsing)
-      .file (full file name including path, is set on the initial parsing)
-      .maildirflags: a set() of MailDir flags
-      .tags: a set() of notmuch tags
-      ... and many more properties. Please refer to the class documentation
-          for details.
+    * Valid instance variables self.*
+
+       The following vars are set on the initial parsing 
+       (or dynamically created as properties):
+       .id (msg id, is set on the initial parsing)
+       .file (full file name including path, is set on the initial parsing)
+       .maildirflags: a set() of MailDir flags
+       .tags: a set() of notmuch tags
+       and many more properties. Please refer to the class documentation
+       for details.
 
       If the following two variables contain a set() of tags/flags that are 
       different from .tags .notmuchtags, a sync_msg_tags will write those 
@@ -180,7 +181,8 @@ class Thread:
     """
 
     def __init__(self, json_thread=None, keep_body=True, keep_nonmatch=True, depth=0):
-        """ Initialize Thread with a json thread object """
+        """ Initialize Thread with a json thread object 
+        """
         self.msgs = []
         """(depth, Message())"""
         self.depth=depth
@@ -271,22 +273,37 @@ class Notmuch:
 #---------------------------------------------------------------------------
     """
     python abstraction to the notmuch command line interface. 
-    It uses the logging module for logging, 
-    so you can set that up to log to files etc.
+
+    Notmuch represents a specific request. Calling its method will cause the actual notmuch calls.
+    It uses the logging module for logging, so you can set that up to log 
+    to files etc.
+
+    :param logger: A logging.Logger to be used for logging
+    :type logger: logging.Logger
+    :rtype: the initialized Notmuch instance
     """
     __notmuchcmd__ = "notmuch"
 
     def __init__(self, logger=None):
+        """
+        Initialize the notmuch object
+
+        """
         if logger:
             self.logger = logger
         else:
             self.logger = logging.getLogger()
 
     def exec_cmd(self, cmdoptions):
-        """ Execute a notmuch command and return the 'process'.
-        cmdoptions is a list of command options to notmuch. You will 
+        """ Execute a notmuch command and return the 'process'
+
+        :param cmdoptions: is a list of command options to notmuch. You will 
         usually finish the prosess with something like:
         (stdout, stderr) = process.communicate()
+        :type cmdoptions: [strings]
+
+        :rtype: process as returned by subprocess.Popen
+        :exception: *:exc:`OSError`: [Errno 2] No such file or directory* if notmuch is not installed or in the searchable path
         """
         logging.debug("Execute %s" % ([Notmuch.__notmuchcmd__] + cmdoptions))
 
