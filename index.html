@@ -19,8 +19,7 @@
     </script>
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="notmuch v0.1 documentation" href="" />
-    <link rel="next" title="Constants: Opcode & Type" href="thread.html" /> 
+    <link rel="top" title="notmuch v0.1 documentation" href="" /> 
   </head>
   <body>
     <div class="related">
@@ -29,9 +28,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="thread.html" title="Constants: Opcode & Type"
-             accesskey="N">next</a> |</li>
         <li><a href="">notmuch v0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -43,7 +39,13 @@
             
   <div class="section" id="welcome-to-notmuch-s-documentation">
 <h1>Welcome to notmuch&#8217;s documentation!<a class="headerlink" href="#welcome-to-notmuch-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>The <tt class="xref docutils literal"><span class="pre">notmuch</span></tt> module provides an interface to the <a class="reference external" href="http://notmuchmail.org">notmuch</a> functionality. The main work horse of this module is the class <a title="notmuch.Notmuch" class="reference internal" href="#notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> with important other classes representing a <tt class="xref docutils literal"><span class="pre">Thread</span></tt> and a single <tt class="xref docutils literal"><span class="pre">Message</span></tt>.</p>
+<p>The <tt class="xref docutils literal"><span class="pre">notmuch</span></tt> module provides an interface to the <a class="reference external" href="http://notmuchmail.org">notmuch</a> functionality. The main work horse of this module is the class <a title="notmuchweb.notmuch.Notmuch" class="reference internal" href="#notmuchweb.notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> with important other classes representing a <a title="notmuchweb.notmuch.Thread" class="reference internal" href="#notmuchweb.notmuch.Thread"><tt class="xref docutils literal"><span class="pre">Thread</span></tt></a> and a single <a title="notmuchweb.notmuch.Message" class="reference internal" href="#notmuchweb.notmuch.Message"><tt class="xref docutils literal"><span class="pre">Message</span></tt></a>.</p>
+<blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The current code assumes that  you have the dateparser branch applied. It also assumes that the patch is included to send the notmuch tags as json arrays. If the latter has not, I have been experiencing weird json parsing failures.</p>
+</div>
+</blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -53,19 +55,93 @@
 </tbody>
 </table>
 <p>This page contains the main API overview. More information on specific topics can be found on the following pages:</p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="thread.html">Constants: <tt class="docutils literal"><span class="pre">Opcode</span></tt> &amp; <tt class="docutils literal"><span class="pre">Type</span></tt></a></li>
+<ul class="simple">
 </ul>
 </div>
 <div class="section" id="notmuch-the-notmuch-interface">
 <h1><tt class="xref docutils literal"><span class="pre">notmuch</span></tt> &#8211; The Notmuch interface<a class="headerlink" href="#notmuch-the-notmuch-interface" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="notmuch-a-notmuch-call">
-<h2><a title="notmuch.Notmuch" class="reference internal" href="#notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> &#8211; A notmuch call<a class="headerlink" href="#notmuch-a-notmuch-call" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="message-a-single-email-message">
+<h2><a title="notmuchweb.notmuch.Message" class="reference internal" href="#notmuchweb.notmuch.Message"><tt class="xref docutils literal"><span class="pre">Message</span></tt></a> &#8211; A single email message<a class="headerlink" href="#message-a-single-email-message" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="notmuch.Notmuch">
+<dt id="notmuchweb.notmuch.Message">
 <em class="property">
-class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[</span><em>logger=None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#notmuch.Notmuch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notmuch represents a specific request. Calling its method will cause the actual notmuch calls.</p>
+class </em><tt class="descname">Message</tt><big>(</big><em>nm_msg</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a message as returned by notmuch.</p>
+<ul>
+<li><p class="first">Valid instance variables self.*</p>
+<blockquote>
+<p>The following vars are set on the initial parsing 
+(or dynamically created as properties):
+.id (msg id, is set on the initial parsing)
+.file (full file name including path, is set on the initial parsing)
+.maildirflags: a set() of MailDir flags
+.tags: a set() of notmuch tags
+and many more properties. Please refer to the class documentation
+for details.</p>
+</blockquote>
+<p>If the following two variables contain a set() of tags/flags that are 
+different from .tags .notmuchtags, a sync_msg_tags will write those 
+changes:
+.sync_maildirflags: a set() of MailDir flags to be used
+.sync_tags: a set() of notmuch tags to be used</p>
+<p>.is_valid: is True if parsing found a message, False otherwise</p>
+</li>
+</ul>
+<dl class="method">
+<dt id="notmuchweb.notmuch.Message.sync_msg_tags">
+<tt class="descname">sync_msg_tags</tt><big>(</big><em>dryrun=False</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Message.sync_msg_tags" title="Permalink to this definition">¶</a></dt>
+<dd>Sync up changed maildir tags and/or notmuch tags.
+It examines self.tags|sync_tags and self.maildirflags|sync_maildirflags
+sync_* contains the new set of tags to be applied</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="thread-represents-a-message-thread">
+<h2><a title="notmuchweb.notmuch.Thread" class="reference internal" href="#notmuchweb.notmuch.Thread"><tt class="xref docutils literal"><span class="pre">Thread</span></tt></a> &#8211; Represents a message thread<a class="headerlink" href="#thread-represents-a-message-thread" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="notmuchweb.notmuch.Thread">
+<em class="property">
+class </em><tt class="descname">Thread</tt><big>(</big><em>json_thread=None</em>, <em>keep_body=True</em>, <em>keep_nonmatch=True</em>, <em>depth=0</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>An iterator containing a bunch of mail messages retaining the thread structure).</p>
+<p>The work horse is self.msgs which is a list of (depth, Message()) tuples.
+depth starts at 0 and increases for replies.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Thread is what a call to notmuch.show() will return, containing a bunch of <a title="notmuchweb.notmuch.Message" class="reference internal" href="#notmuchweb.notmuch.Message"><tt class="xref docutils literal"><span class="pre">Message</span></tt></a>s.</p>
+</div>
+<dl class="method">
+<dt id="notmuchweb.notmuch.Thread.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Thread.next" title="Permalink to this definition">¶</a></dt>
+<dd>returns the next message when iterating</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Thread.parse_forest">
+<tt class="descname">parse_forest</tt><big>(</big><em>json_threads</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Thread.parse_forest" title="Permalink to this definition">¶</a></dt>
+<dd><p>parses and add multiple &#8216;threads&#8217; (json object)</p>
+<p>The method honors existing self.keep_body and self.keep_nonmatch values
+returns: self</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Thread.parse_thread">
+<tt class="descname">parse_thread</tt><big>(</big><em>json_thread</em>, <em>keep_body</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Thread.parse_thread" title="Permalink to this definition">¶</a></dt>
+<dd>parses a json_thread object and adds (depth, Message()) tuples to
+self.msg</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="notmuch-a-notmuch-call">
+<h2><a title="notmuchweb.notmuch.Notmuch" class="reference internal" href="#notmuchweb.notmuch.Notmuch"><tt class="xref docutils literal"><span class="pre">Notmuch</span></tt></a> &#8211; A notmuch call<a class="headerlink" href="#notmuch-a-notmuch-call" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="notmuchweb.notmuch.Notmuch">
+<em class="property">
+class </em><tt class="descname">Notmuch</tt><big>(</big><em>logger=None</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch" title="Permalink to this definition">¶</a></dt>
+<dd><p>python abstraction to the notmuch command line interface.</p>
+<p>Notmuch represents a specific request. Calling its method will cause the actual notmuch calls.
+It uses the logging module for logging, so you can set that up to log 
+to files etc.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -76,22 +152,84 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.exec_cmd">
+<tt class="descname">exec_cmd</tt><big>(</big><em>cmdoptions</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.exec_cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a notmuch command and return the &#8216;process&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>cmdoptions</em> &#8211; is a list of command options to notmuch. You will</td>
+</tr>
+</tbody>
+</table>
+<p>usually finish the prosess with something like:
+(stdout, stderr) = process.communicate()
+:type cmdoptions: [strings]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">process as returned by subprocess.Popen</td>
+</tr>
+<tr class="field"><th class="field-name">Exception:</th><td class="field-body"><em>:exc:`OSError`: [Errno 2] No such file or directory</em> if notmuch is not installed or in the searchable path</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<div class="section" id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-</blockquote>
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.new">
+<tt class="descname">new</tt><big>(</big><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.new" title="Permalink to this definition">¶</a></dt>
+<dd>Perform a notmuch new in order to get a consistent db
+Returns: True on success or None on error</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.prune">
+<tt class="descname">prune</tt><big>(</big><em>criteria='tag:delete or tag:maildir::trashed'</em>, <em>dryrun=False</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.prune" title="Permalink to this definition">¶</a></dt>
+<dd>Physically delete all mail files matching &#8216;tag&#8217;. 
+Returns the number of matched mails.
+If dryrun == True, it will not actually delete them.</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.show">
+<tt class="descname">show</tt><big>(</big><em>term</em>, <em>wholeThread=False</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches notmuch for &#8220;term&#8221;
+returns a Thread() object containing all messages,</p>
+<p>Returns even on an xapian error,
+as not all of them are fatal and some occur frequently...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.syncTags">
+<tt class="descname">syncTags</tt><big>(</big><em>thorough=False</em>, <em>frommaildir=False</em>, <em>dryrun=False</em>, <em>all_mails=None</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.syncTags" title="Permalink to this definition">¶</a></dt>
+<dd><p>sync the unread Tags. It does not really go through all mail files,
+but compares the stored file name with the notmuch tags.
+It will take the maildir tags as authoritative if &#8216;frommaildir&#8217; or 
+the notmuch tags otherwise.</p>
+<p>This code requires that the dateparser branch has been applied to notmuch as it will not understand the used timestamps otherwise.(TODO, should implement a fallback, as that is not going to to be incorporated anytime soon)
+Flags handled:
+* &#8220;S&#8221;: the user has viewed this message. Corresponds to &#8220;unread&#8221; tag
+* &#8220;T&#8221; (deleted): the user has moved this message to the trash.
+* &#8220;D&#8221; (draft):
+* &#8220;F&#8221; (flagged): user-defined flag; toggled at user discretion. 
+Not handled:
+* Flag &#8220;P&#8221; (passed): the user has resent/forwarded/bounced this message.
+* Flag &#8220;R&#8221; (replied): the user has replied to this message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="notmuchweb.notmuch.Notmuch.unlink_file">
+<tt class="descname">unlink_file</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#notmuchweb.notmuch.Notmuch.unlink_file" title="Permalink to this definition">¶</a></dt>
+<dd>returns 1 on success, or 0 otherwise.
+Does not fail if the file does not exist.</dd></dl>
+
+</dd></dl>
+
 </div>
-</div>
-<div class="section" id="dnsresult-a-dns-request-result">
-<h2><tt class="xref docutils literal"><span class="pre">DnsResult</span></tt> &#8211; A DNS request result<a class="headerlink" href="#dnsresult-a-dns-request-result" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="dnserror-a-dns-request-error">
-<h2><tt class="xref docutils literal"><span class="pre">DNSError</span></tt> &#8211; A DNS request error<a class="headerlink" href="#dnserror-a-dns-request-error" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="out-of-date-and-broken">
-<h2>Out of date and broken<a class="headerlink" href="#out-of-date-and-broken" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="notmucherror-a-notmuch-execution-error">
+<h2><tt class="xref docutils literal"><span class="pre">NotmuchError</span></tt> &#8211; A Notmuch execution error<a class="headerlink" href="#notmucherror-a-notmuch-execution-error" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -114,21 +252,15 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
 </ul>
 </li>
 <li><a class="reference external" href="#notmuch-the-notmuch-interface"><tt class="docutils literal"><span class="pre">notmuch</span></tt> &#8211; The Notmuch interface</a><ul>
-<li><a class="reference external" href="#notmuch-a-notmuch-call"><tt class="docutils literal"><span class="pre">Notmuch</span></tt> &#8211; A notmuch call</a><ul>
-<li><a class="reference external" href="#methods">Methods</a></li>
-</ul>
-</li>
-<li><a class="reference external" href="#dnsresult-a-dns-request-result"><tt class="docutils literal"><span class="pre">DnsResult</span></tt> &#8211; A DNS request result</a></li>
-<li><a class="reference external" href="#dnserror-a-dns-request-error"><tt class="docutils literal"><span class="pre">DNSError</span></tt> &#8211; A DNS request error</a></li>
-<li><a class="reference external" href="#out-of-date-and-broken">Out of date and broken</a></li>
+<li><a class="reference external" href="#message-a-single-email-message"><tt class="docutils literal"><span class="pre">Message</span></tt> &#8211; A single email message</a></li>
+<li><a class="reference external" href="#thread-represents-a-message-thread"><tt class="docutils literal"><span class="pre">Thread</span></tt> &#8211; Represents a message thread</a></li>
+<li><a class="reference external" href="#notmuch-a-notmuch-call"><tt class="docutils literal"><span class="pre">Notmuch</span></tt> &#8211; A notmuch call</a></li>
+<li><a class="reference external" href="#notmucherror-a-notmuch-execution-error"><tt class="docutils literal"><span class="pre">NotmuchError</span></tt> &#8211; A Notmuch execution error</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-            <h4>Next topic</h4>
-            <p class="topless"><a href="thread.html"
-                                  title="next chapter">Constants: <tt class="docutils literal"><span class="pre">Opcode</span></tt> &amp; <tt class="docutils literal"><span class="pre">Type</span></tt></a></p>
             <h3>This Page</h3>
             <ul class="this-page-menu">
               <li><a href="sources/index.txt"
@@ -157,9 +289,6 @@ class </em><tt class="descname">Notmuch</tt><big>(</big><span class="optional">[
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="thread.html" title="Constants: Opcode & Type"
-             >next</a> |</li>
         <li><a href="">notmuch v0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
