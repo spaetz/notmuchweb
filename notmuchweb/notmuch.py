@@ -270,7 +270,7 @@ class Thread:
 
 
 #---------------------------------------------------------------------------
-class MessageError(Exception):
+class NotmuchError(Exception):
 #---------------------------------------------------------------------------
     """This Exception is thrown in case of an error."""
     pass
